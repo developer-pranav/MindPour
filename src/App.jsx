@@ -8,7 +8,6 @@ import Footer from './components/Footer/Footer';
 import { Outlet } from 'react-router-dom';
 
 function App() {
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,14 +22,12 @@ function App() {
     .finally(() => setLoading(false))
   }, [])
   
-  return !loading ? (
+  return (
     <>
       <Header/>
         <Outlet/>
       <Footer/>
     </>
-  ) : (
-    <div>Loading</div>
   )
 }
 

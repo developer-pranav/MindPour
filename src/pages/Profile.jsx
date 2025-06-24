@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Container, Postcard } from '../components';
+import { useNavigate } from 'react-router-dom';
+import { Container, Postcard, Loader } from '../components';
 import appwriteService from '../appwrite/config';
 import Avatar from '../Images/avatar.jpg';
 
 function Profile() {
   const userData = useSelector((state) => state.auth.userData);
   const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userData?.$id) {
-      appwriteService.getPosts().then((res) => {
-        const filteredPosts = res?.documents?.filter(
-          (post) => post.userId === userData.$id
-        );
-        setUserPosts(filteredPosts || []);
-      });
+      appwriteService.getPosts()
+        .then((res) => {
+          const filteredPosts = res?.documents?.filter(
+            (post) => post.userId === userData.$id
+          );
+          setUserPosts(filteredPosts || []);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [userData]);
+
+  if (loading) return <Loader text="Loading your profile..." />;
 
   if (!userData) {
     return (
@@ -51,7 +60,7 @@ function Profile() {
             <span className="font-semibold">{userPosts.length}</span> Posts Added
           </p>
           <button
-            onClick={() => window.location.href = '/edit-profile'}
+            onClick={() => navigate('/edit-profile')}
             className="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition mt-4 sm:mt-0"
           >
             Edit Profile
