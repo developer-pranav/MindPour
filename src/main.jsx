@@ -14,7 +14,6 @@ import EditPost from "./pages/editPost";
 
 import Post from "./pages/Post";
 
-import AllPosts from "./pages/AllPost";
 import Profile from './pages/Profile.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 
@@ -41,15 +40,6 @@ const router = createBrowserRouter([
         element: (
           <AuthLayout authentication={false}>
             <Signup />
-          </AuthLayout>
-        ),
-      },
-      {
-        path: "/all-posts",
-        element: (
-          <AuthLayout authentication>
-            {" "}
-            <AllPosts />
           </AuthLayout>
         ),
       },

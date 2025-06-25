@@ -35,7 +35,7 @@ function Login() {
             if (session) {
                 const userData = await authService.getCurrentUser();
                 if (userData) {
-                    dispatch(authlogin(userData));
+                    dispatch(authlogin({userData}));
                     navigate("/");
                 }
             }

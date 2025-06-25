@@ -11,20 +11,23 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    if (userData?.$id) {
-      appwriteService.getPosts()
-        .then((res) => {
-          const filteredPosts = res?.documents?.filter(
-            (post) => post.userId === userData.$id
-          );
-          setUserPosts(filteredPosts || []);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [userData]);
+  if (userData?.$id) {
+    setLoading(true); // show loader while fetching posts
+    appwriteService.getPosts()
+      .then((res) => {
+        const filteredPosts = res?.documents?.filter(
+          (post) => post.userId === userData.$id
+        );
+        setUserPosts(filteredPosts || []);
+      })
+      .finally(() => setLoading(false));
+  } else {
+    setLoading(false); // in case userData is null
+  }
+}, [userData]);
+
 
   if (loading) return <Loader text="Loading your profile..." />;
 

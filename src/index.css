@@ -3,3 +3,12 @@
 html, body, #root {
   height: 100%;
 }
+
+.ProseMirror {
+  min-height: 200px;
+  padding: 0.75rem;
+  outline: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  cursor: text;
+}

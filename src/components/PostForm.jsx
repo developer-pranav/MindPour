@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { Button, Input, RTE, Select } from "./index";
+import { useForm, Controller } from "react-hook-form";
+import { Button, Input, Select } from "./index";
+import RTE from "./RTE";
 import appwriteService from "../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -37,7 +38,7 @@ export default function PostForm({ post }) {
 
       const dbPost = await appwriteService.updatePost(post.$id, {
         ...data,
-        featuredImage: file ? file.$id : post.featuredImage, // fallback to existing
+        featuredImage: file ? file.$id : post.featuredImage,
       });
 
       if (dbPost) {
@@ -49,13 +50,11 @@ export default function PostForm({ post }) {
       if (file) {
         const fileId = file.$id;
 
-        console.log(userData)
-
         const dbPost = await appwriteService.createPost({
           ...data,
           featuredImage: fileId,
           userId: userData.$id,
-          username: userData.name
+          username: userData.name,
         });
 
         if (dbPost) {
@@ -97,7 +96,7 @@ export default function PostForm({ post }) {
       onSubmit={handleSubmit(submit)}
       className="flex flex-wrap bg-white shadow-md rounded-xl p-6 gap-6"
     >
-      {/* Left */}
+      {/* Left Side */}
       <div className="w-full md:w-2/3">
         <Input
           label="Title:"
@@ -105,6 +104,7 @@ export default function PostForm({ post }) {
           className="mb-4"
           {...register("title", { required: true })}
         />
+
         <Input
           label="Slug:"
           placeholder="slug-title"
@@ -116,15 +116,22 @@ export default function PostForm({ post }) {
             })
           }
         />
-        <RTE
-          label="Content:"
+
+        <Controller
           name="content"
           control={control}
           defaultValue={getValues("content")}
+          render={({ field }) => (
+            <RTE
+              label="Content:"
+              content={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
       </div>
 
-      {/* Right */}
+      {/* Right Side */}
       <div className="w-full md:w-1/3">
         <Input
           label="Featured Image:"
