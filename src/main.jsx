@@ -17,6 +17,8 @@ import Post from "./pages/Post";
 import Profile from './pages/Profile.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 
+import NotFound from './pages/NotFound.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -82,7 +84,13 @@ const router = createBrowserRouter([
             <EditProfile />
           </AuthLayout>
         )
-      }
+      },
+      {
+        path: "*",
+        element: (
+          <NotFound/>
+        )
+      },
     ]
   }
 ])
